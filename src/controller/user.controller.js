@@ -2,15 +2,19 @@ require('dotenv/config');
 const jwt = require('jsonwebtoken');
 const { UserService } = require('../services');
 
+const jwtConfig = {
+  expiresIn: '7d',
+  algorithm: 'HS256',
+};
 const secret = process.env.JWT_SECRET || 'suaSenhaSecreta';
 
-const isBodyValid = (email, password) => email && password;
+const isloginValid = (email, password) => email && password;
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!isBodyValid(email, password)) {
+    if (!isloginValid(email, password)) {
       return res.status(400).json({ message: 'Some required fields are missing' });
     }
 
@@ -20,11 +24,6 @@ const login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid fields' }); 
     }
 
-    const jwtConfig = {
-      expiresIn: '7d',
-      algorithm: 'HS256',
-    };
-
     const token = jwt.sign({ data: { userId: user.id } }, secret, jwtConfig);
 
     res.status(200).json({ token });
@@ -33,6 +32,25 @@ const login = async (req, res) => {
   }
 };
 
+const newUser = async (req, res) => {
+  const { displayName, email, password, image } = req.body;
+
+  const user = await UserService.getByEmail(email);
+
+  console.log('user', user);
+
+  if (user) {
+    return res.status(409).json({ message: 'User already registered' });
+  }
+
+  const NewUser = await UserService.newUser({ displayName, email, password, image });
+
+  const token = jwt.sign({ data: { userId: NewUser.id } }, secret, jwtConfig);
+
+  return res.status(201).json({ token });
+};
+
 module.exports = {
   login,
+  newUser,
 };
