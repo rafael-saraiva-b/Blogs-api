@@ -11,7 +11,6 @@ if (!user) {
   return null;
 }
 const { password, ...userWithoutPassword } = user.dataValues;
-console.log(userWithoutPassword);
 return userWithoutPassword;
 };
 
