@@ -37,8 +37,6 @@ const newUser = async (req, res) => {
 
   const user = await UserService.getByEmail(email);
 
-  console.log('user', user);
-
   if (user) {
     return res.status(409).json({ message: 'User already registered' });
   }
@@ -50,7 +48,23 @@ const newUser = async (req, res) => {
   return res.status(201).json({ token });
 };
 
+const getAllUsers = async (req, res) => {
+  const users = await UserService.getAllUsers();
+
+  return res.status(200).json(users);
+};
+
+const getUserById = async (req, res) => {
+  const user = await UserService.getById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User does not exist' });
+  }
+  return res.status(200).json(user);
+};
+
 module.exports = {
   login,
   newUser,
+  getAllUsers,
+  getUserById,
 };
