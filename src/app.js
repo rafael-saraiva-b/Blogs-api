@@ -25,6 +25,8 @@ app.get('/user/:id', validateJWT, userController.getUserById);
 
 app.post('/categories', validateJWT, categoriesController.newCategory);
 
+app.get('/categories', validateJWT, categoriesController.getAllCategories);
+
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;
