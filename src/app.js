@@ -26,6 +26,8 @@ app.get('/user', validateJWT, userController.getAllUsers);
 
 app.get('/user/:id', validateJWT, userController.getUserById);
 
+app.delete('/user/me', validateJWT, userController.deleteUser);
+
 app.post('/categories', validateJWT, categoriesController.newCategory);
 
 app.get('/categories', validateJWT, categoriesController.getAllCategories);
