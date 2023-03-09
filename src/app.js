@@ -42,6 +42,8 @@ app.put('/post/:id',
    checkUpdatingPost,
     postController.updatePost);
 
+app.delete('/post/:id', validateJWT, checkUserAuthorization, postController.deletePostById);
+
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;

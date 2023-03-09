@@ -13,7 +13,6 @@ const getAllCategories = async () => {
 
 const checkIfAllExist = async (ids) => {
   const searchebleIds = ids.map((id) => ({ id }));
-  console.log('searchebleIds', searchebleIds);
   const category = await Category.findAndCountAll({ where: {
     [Op.or]: searchebleIds } });
   return category;
